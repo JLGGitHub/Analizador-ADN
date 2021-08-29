@@ -1,9 +1,10 @@
 ﻿using DataAccess.Interfaces;
+using Entities.DTO;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Utilities;
+using Utilities.Enumerations;
 
 namespace MutantApi
 {
@@ -23,11 +24,21 @@ namespace MutantApi
         /// </summary>
         /// <param name="Respuesta"></param>
         /// <returns></returns>
-        protected IActionResult RespuestaApi(int status)
+        protected IActionResult ApiResponse(int status)
         {
-            return StatusCode(status);
+            if(status == 200)
+                return StatusCode(status, new ModelResponseApi {Status = status, Message = EnumMessages.isMutant.GetEnumDescription()});
+            else
+                return StatusCode(status, new ModelResponseApi { Status = status, Message = EnumMessages.isHuman.GetEnumDescription() });
+
         }
-        protected IActionResult RespuestaApi(object obj)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        protected IActionResult ApiResponse(object obj)
         {
             return StatusCode(200, obj);
         }
@@ -37,15 +48,15 @@ namespace MutantApi
         /// </summary>
         /// <param name="func"></param>
         /// <returns></returns>
-        protected async Task<IActionResult> ControladorExepciones(Func<Task<IActionResult>> func)
+        protected async Task<IActionResult> ControllerExceptions(Func<Task<IActionResult>> func)
         {
             try
             {
                 return await func().ConfigureAwait(false);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return RespuestaApi(403);
+                return ApiResponse(403);
             }
         }
     }

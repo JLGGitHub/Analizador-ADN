@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
 using System.IO;
 using System;
+using DataAccess.ContextDb;
 
 namespace Mutant
 {
@@ -38,6 +39,7 @@ namespace Mutant
                                                                         options
                                                                          .UseSqlServer(conexion)
                                                                          .UseLazyLoadingProxies(false));
+            services.AddScoped<IMainContext>(provider => provider.GetService<MainContext>());
             services.AddTransient<IAdn, Adn>();
 
 

@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using Utilities.Enumerations;
 
 namespace Utilities
 {
     public static class ExtensionMethods
     {
         /// <summary>
-        /// 
+        /// Metodo de extension que determina si un ADN cumple con el criterio de base nigrogenada
         /// </summary>
         /// <param name="adn"></param>
         /// <returns></returns>
@@ -25,7 +28,7 @@ namespace Utilities
         }
 
         /// <summary>
-        /// 
+        /// Metodo de extension que valida dimensiones de una matriz
         /// </summary>
         /// <param name="adn"></param>
         /// <returns></returns>
@@ -37,7 +40,7 @@ namespace Utilities
         }
 
         /// <summary>
-        /// 
+        /// Metodo de extension que valida secuencia del adn horizontalmente
         /// </summary>
         /// <param name="adn"></param>
         /// <returns></returns>
@@ -69,7 +72,7 @@ namespace Utilities
         }
 
         /// <summary>
-        /// 
+        /// Metodo de extension que valida secuencia del adn verticalmente
         /// </summary>
         /// <param name="adn"></param>
         /// <returns></returns>
@@ -103,7 +106,7 @@ namespace Utilities
 
 
         /// <summary>
-        /// 
+        /// Metodo de extension que valida secuencia del adn oblicuamente
         /// </summary>
         /// <param name="adn"></param>
         /// <returns></returns>
@@ -137,11 +140,11 @@ namespace Utilities
 
 
         /// <summary>
-        /// 
+        /// Metodo de extension que genera una matriz en base a una estructura de adn de entrada
         /// </summary>
         /// <param name="adn"></param>
         /// <returns></returns>
-        private static char[,] GenerateMatrix(string[] adn)
+        public static char[,] GenerateMatrix(string[] adn)
         {
             char[,] auxMarix = new char[adn.Length, adn.Length];
 
@@ -158,7 +161,7 @@ namespace Utilities
         }
 
         /// <summary>
-        /// 
+        /// Metodo de extension para controlar exepciones
         /// </summary>
         /// <param name="fun"></param>
         /// <returns></returns>
@@ -176,7 +179,7 @@ namespace Utilities
         }
 
         /// <summary>
-        /// 
+        ///  Metodo de extension para controlar exepciones
         /// </summary>
         /// <param name="fun"></param>
         /// <returns></returns>
@@ -193,6 +196,26 @@ namespace Utilities
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string GetEnumDescription(this EnumMessages value)
+        {
+            if (value != null)
+            {
+                FieldInfo fi = value.GetType().GetField(value.ToString());
+                DescriptionAttribute[] attributes = fi.GetCustomAttributes(typeof(DescriptionAttribute), false) as DescriptionAttribute[];
 
+                if (attributes != null && attributes.Any())
+                {
+                    return attributes.First().Description;
+                }
+
+                return value.ToString();
+            }
+            return null;
+        }
     }
 }

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MutantApi
 {
+    /// <summary>
+    /// Clase para configuracion del Swagger
+    /// </summary>
     public class SwaggerConfiguration
     {
         /// <summary>

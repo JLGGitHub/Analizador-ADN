@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DataAccess.ContextDb
 {
-    public partial  class MainContext : DbContext
+    public partial  class MainContext : DbContext, IMainContext
     {
         public MainContext(DbContextOptions<MainContext> options) : base (options)
         {

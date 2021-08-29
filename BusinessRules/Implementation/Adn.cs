@@ -15,19 +15,22 @@ namespace BusinessRules.Implementation
     public class Adn : BusinessRulesBase<Entities.Adn, IAdnDao>, IAdn
     {
 
-        public Adn(MainContext context): base(new AdnDao(context))
+        public Adn(IMainContext context): base(new AdnDao(context))
         {
 
         }
 
         /// <summary>
-        /// 
+        /// Logica de negocio que permite determinar si una secuencia de ADN corresponde a la de un mutante
+        /// Se agregan metodos de extension al string adn que vermiten realizar validaciones necesarias 
+        /// como el nitrogenbase, dimension de la matriz, y los distintos metodos de validacion de secuencia (Horizontal, vertical, Oblique)
         /// </summary>
         /// <param name="adn"></param>
         /// <returns></returns>
         public Task<bool> IsMutant(string[] adn)
         {
             int sequence = 0;
+
             if (adn.NitrogenBase() && adn.MatrixNxN())
             {
                 sequence = adn.HorizontalSequenceSearch() + adn.ObliqueSequenceSearch() + adn.VerticalSequenceSearch();
@@ -37,12 +40,16 @@ namespace BusinessRules.Implementation
             return Task.FromResult(sequence > Constants.MinimalMutantSequence);
         }
 
+        /// <summary>
+        /// Logica de negocio que retorna la estadistica mutantes versus humanos
+        /// </summary>
+        /// <returns></returns>
         public Task<MutantStatisticalResponse> Stats()
         {
-            var Adns = DaoBusiness._context.Adns.ToList();
+            var Adns = DaoBusiness._context.Set<Entities.Adn>().ToList();
             var mutant = Adns.Count(item => item.Mutant);
             var human = Adns.Count(item => !item.Mutant);
-            return Task.FromResult(new MutantStatisticalResponse { CountHumanDna = human, CountMutantDna = mutant, Ratio = ((float)mutant / (float)human)  });
+            return Task.FromResult(new MutantStatisticalResponse { CountHumanDna = human, CountMutantDna = mutant, Ratio = ((float)mutant / (float)human) });
         }
     }
 }

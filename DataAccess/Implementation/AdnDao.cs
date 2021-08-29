@@ -8,7 +8,7 @@ namespace DataAccess.Implementation
 {
     public class AdnDao: RepositoryBase<Entities.Adn>, IAdnDao
     {
-        public AdnDao(MainContext context): base(context)
+        public AdnDao(IMainContext context): base(context)
         {
 
         }

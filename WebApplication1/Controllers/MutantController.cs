@@ -32,7 +32,8 @@ namespace Mutant.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Servicio que identifica si una secuencia de ADN corresponde a un mutante o humano
+        /// Cada verificacion es almacenada en base de datos
         /// </summary>
         /// <param name="adn"></param>
         /// <returns></returns>
@@ -41,15 +42,14 @@ namespace Mutant.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(MutantRequest))]
         public Task<IActionResult> Mutant([FromBody] Entities.DTO.MutantRequest adn)
         {
-
-            return ControladorExepciones(async () =>
+            return ControllerExceptions(async () =>
             {
-                return RespuestaApi(await RepoBusinessRules.IsMutant(adn.Dna) ? 200 : 403);
+                return ApiResponse(await RepoBusinessRules.IsMutant(adn.Dna) ? 200 : 403);
             });
         }
 
         /// <summary>
-        /// 
+        /// Servicio que retorna las estadisticas de mutantes versus humanos
         /// </summary>
         /// <param name="adn"></param>
         /// <returns></returns>
@@ -59,9 +59,9 @@ namespace Mutant.Controllers
         public Task<IActionResult> Stats()
         {
 
-            return ControladorExepciones(async () =>
+            return ControllerExceptions(async () =>
             {
-                return RespuestaApi(await RepoBusinessRules.Stats());
+                return ApiResponse(await RepoBusinessRules.Stats());
             });
         }
     }

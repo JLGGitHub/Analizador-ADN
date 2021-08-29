@@ -14,13 +14,13 @@ namespace DataAccess.Implementation
         /// <summary>
         /// 
         /// </summary>
-        public MainContext _context { get; }
+        public IMainContext _context { get; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="context"></param>
-        public RepositoryBase(MainContext context)
+        public RepositoryBase(IMainContext context)
         {
             this._context = context;
         }
