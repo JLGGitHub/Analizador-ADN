@@ -1,4 +1,6 @@
 ﻿using BusinessRules.Interfaces;
+using Entities.DTO;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MutantApi;
@@ -26,7 +28,7 @@ namespace Mutant.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok();
+            return Ok("Servico OK");
         }
 
         /// <summary>
@@ -35,6 +37,8 @@ namespace Mutant.Controllers
         /// <param name="adn"></param>
         /// <returns></returns>
         [HttpPost("Mutant")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MutantRequest))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(MutantRequest))]
         public Task<IActionResult> Mutant([FromBody] Entities.DTO.MutantRequest adn)
         {
 
@@ -50,6 +54,8 @@ namespace Mutant.Controllers
         /// <param name="adn"></param>
         /// <returns></returns>
         [HttpGet("Stats")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MutantRequest))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(MutantRequest))]
         public Task<IActionResult> Stats()
         {
 
