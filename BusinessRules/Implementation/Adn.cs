@@ -27,10 +27,10 @@ namespace BusinessRules.Implementation
         /// <returns></returns>
         public Task<bool> IsMutant(string[] adn)
         {
-            int sequence = 0; 
-            if(adn.NitrogenBase() && adn.MatrixNxN())
+            int sequence = 0;
+            if (adn.NitrogenBase() && adn.MatrixNxN())
             {
-                sequence = adn.HorizontalSequenceSearch();
+                sequence = adn.HorizontalSequenceSearch() + adn.ObliqueSequenceSearch() + adn.VerticalSequenceSearch();
             }
 
             DaoBusiness.Create(new Entities.Adn { AdnChain = JsonConvert.SerializeObject(adn).ToUpper(), Mutant = (sequence > Constants.MinimalMutantSequence) });
@@ -39,8 +39,10 @@ namespace BusinessRules.Implementation
 
         public Task<MutantStatisticalResponse> Stats()
         {
-            var x = DaoBusiness._context.Adns.ToList();
-            return Task.FromResult(new MutantStatisticalResponse { CountHumanDna = x.Count(item => item.Mutant), CountMutantDna = x.Count(item => !item.Mutant), Ratio = 0 });
+            var Adns = DaoBusiness._context.Adns.ToList();
+            var mutant = Adns.Count(item => item.Mutant);
+            var human = Adns.Count(item => !item.Mutant);
+            return Task.FromResult(new MutantStatisticalResponse { CountHumanDna = human, CountMutantDna = mutant, Ratio = ((float)mutant / (float)human)  });
         }
     }
 }

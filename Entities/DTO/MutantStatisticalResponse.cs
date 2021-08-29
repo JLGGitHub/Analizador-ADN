@@ -8,6 +8,6 @@ namespace Entities.DTO
     {
         public int CountMutantDna { get; set; }
         public int CountHumanDna { get; set; }
-        public decimal Ratio { get; set; }
+        public float Ratio { get; set; }
     }
 }
