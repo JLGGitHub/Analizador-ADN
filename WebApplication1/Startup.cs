@@ -34,10 +34,10 @@ namespace Mutant
         {
             AddSwagger(services);
 
-            var conexion = "Server=tcp:meli-server.database.windows.net,1433;Initial Catalog=melidb;Persist Security Info=False;User ID=administrador;Password=admin123*;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            //var conexion = ;
             services.AddDbContext<DataAccess.ContextDb.MainContext>(options =>
                                                                         options
-                                                                         .UseSqlServer(conexion)
+                                                                         .UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
                                                                          .UseLazyLoadingProxies(false));
             services.AddScoped<IMainContext>(provider => provider.GetService<MainContext>());
             services.AddTransient<IAdn, Adn>();
@@ -47,6 +47,7 @@ namespace Mutant
                     .AddJsonOptions(options => options.JsonSerializerOptions.MaxDepth = int.MaxValue);
 
 
+            services.AddApplicationInsightsTelemetry();
 
         }
 
